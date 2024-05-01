@@ -1,25 +1,43 @@
-import Fastify from "fastify";
-import userRoutes from "./modules/user/user.route";
-import { userSchemas } from "./modules/user/user.schema";
-const server = Fastify();
+import Fastify, { FastifyRequest, FastifyReply } from "fastify"
+import fjwt from "@fastify/jwt"
+import userRoutes from "./modules/user/user.route"
+import { userSchemas } from "./modules/user/user.schema"
 
-server.get("/healthcheck", async function (request, response) {
-  return { status: "OK" };
-});
+export const server = Fastify()
+
+server.register(fjwt, {
+  // cspell:disable-next-line
+  secret: "YZCVg57Da8RNo7uLhVggiDcbRGoWBv",
+})
+
+server.decorate(
+  "authenticate",
+  async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+      await request.jwtVerify()
+    } catch (e) {
+      await reply.send(e)
+    }
+  },
+)
+
+server.get("/healthCheck", async function (request, response) {
+  return { status: "OK" }
+})
 
 async function main() {
   for (const schema of userSchemas) {
-    server.addSchema(schema);
+    server.addSchema(schema)
   }
 
-  server.register(userRoutes, { prefix: "api/users" });
+  server.register(userRoutes, { prefix: "api/users" })
 
   try {
-    await server.listen({ port: 3000, host: "0.0.0.0" });
-    console.log("Listening ready http://localhost:3000");
+    await server.listen({ port: 3000, host: "0.0.0.0" })
+    console.log("Listening ready http://localhost:3000")
   } catch (e) {
-    console.error(e);
-    process.exit(1);
+    console.error(e)
+    process.exit(1)
   }
 }
-main();
+main()
