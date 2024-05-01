@@ -1,11 +1,12 @@
 {
   "name": "fastify-prisma-ts",
   "version": "0.0.1",
-  "main": "index.js",
+  "main": "index.ts",
   "author": "LudoLoops",
   "license": "MIT",
   "scripts": {
-    "dev": "tsnd --respawn --transpile-only --exit-child src/app.ts"
+    "dev": "tsnd --respawn --transpile-only  --exit-child src/app.ts",
+    "watch-ts": "tsnd -w"
   },
   "dependencies": {
     "@fastify/jwt": "^8.0.0",

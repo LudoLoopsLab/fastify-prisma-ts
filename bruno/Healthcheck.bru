@@ -1,0 +1,20 @@
+meta {
+  name: Healthcheck
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{url}}/healthcheck
+  body: none
+  auth: none
+}
+
+assert {
+  res.body.status: eq "OK"
+  res.status: eq 200
+}
+
+script:post-response {
+  console.log(res.body)
+}
