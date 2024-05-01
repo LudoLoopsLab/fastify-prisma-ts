@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify"
-import { createUser, findUserByEmail } from "./user.services"
+import { createUser, findUserByEmail, findUsers } from "./user.services"
 import { CreateUserInput, LoginInput } from "./user.schema"
 import { verifyPassword } from "../../utils/hash"
 import { server } from "../../app"
@@ -53,3 +53,10 @@ export async function loginHandler(request: FastifyRequest<{ Body: LoginInput }>
   // respond
 
 }
+
+export async function getUsersHandler() {
+  const users = await findUsers()
+
+  return users
+}
+

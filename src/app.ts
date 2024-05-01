@@ -10,6 +10,12 @@ server.register(fjwt, {
   secret: "YZCVg57Da8RNo7uLhVggiDcbRGoWBv",
 })
 
+declare module "fastify" {
+  export interface FastifyInstance {
+    authenticate: any
+  }
+}
+
 server.decorate(
   "authenticate",
   async (request: FastifyRequest, reply: FastifyReply) => {

@@ -1,0 +1,15 @@
+meta {
+  name: find users
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{url}}/api/users
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZW1haWwiOiJib25kam9kc3VzckBtYWlsLmNvbSIsIm5hbWUiOiJ1bm5hbWUiLCJpYXQiOjE3MTQ1ODI3MTh9.8ZMCzvlfSFoldITR3O9jtkl1F-mtoefkkSnhuSsYgdQ
+}
