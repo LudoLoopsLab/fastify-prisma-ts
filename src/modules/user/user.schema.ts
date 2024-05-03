@@ -1,54 +1,52 @@
 import z from "zod"
 import { buildJsonSchemas } from "fastify-zod"
 
-const userCore = z
-  .object({
-    email: z
-      .string({
-        required_error: "Email is required",
-        invalid_type_error: "Email must be a string",
-      })
-      .email(),
-    name: z.string(),
-  })
+const userCore = {
+  email: z
+    .string({
+      required_error: "Email is required",
+      invalid_type_error: "Email must be a string",
+    })
+    .email(),
+  name: z.string(),
+}
 
-
-const createUserSchema = userCore.extend({
+const createUserSchema = z.object({
+  ...userCore,
   password: z.string({
     required_error: "Password is required",
     invalid_type_error: "Password must be a string",
   }),
 })
 
-const createUserResponseSchema = userCore
-  .extend({
-    id: z.number(),
-  })
+const createUserResponseSchema = z.object({
+  ...userCore,
+  id: z.number(),
+})
 
-
-const loginSchema = z.object(
-  {
-    email: z
-      .string({
-        required_error: "Email is required",
-        invalid_type_error: "Email must be a string",
-      })
-      .email(),
-    password: z.string()
-
-  }
-)
+const loginSchema = z.object({
+  email: z
+    .string({
+      required_error: "Email is required",
+      invalid_type_error: "Email must be a string",
+    })
+    .email(),
+  password: z.string(),
+})
 const loginResponseSchema = z.object({
-  accessToken: z.string()
+  accessToken: z.string(),
 })
 export type CreateUserInput = z.infer<typeof createUserSchema>
 
 export type LoginInput = z.infer<typeof loginSchema>
 
-
-export const { schemas: userSchemas, $ref } = buildJsonSchemas({
+const models = {
   createUserSchema,
   createUserResponseSchema,
-  loginSchema, loginResponseSchema
+  loginSchema,
+  loginResponseSchema,
+}
 
+export const { schemas: userSchemas, $ref } = buildJsonSchemas(models, {
+  $id: "userSchema",
 })
